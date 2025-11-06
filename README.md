@@ -8,9 +8,9 @@ an indev ubg project made in astro because:
 
 ## roadmap and things i wanna add
 - [ ] games (ofc)
-- [ ] apps (ofc)
-- [ ] proxy (ofc)
-- [ ] movies
+- [ ] apps (in progress rn)
+- [x] proxy (ofc)
+- [x] movies
 - [ ] chatroom
 - [ ] accounts
 - [ ] friends
