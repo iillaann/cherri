@@ -1,3 +1,5 @@
+## the content in this doc is outdated except for the checklist
+
 # breeze.
 an indev ubg project made in astro because:
 1. i haven't used astro in so long and needed to exercise my skills
@@ -8,8 +10,8 @@ an indev ubg project made in astro because:
 
 ## roadmap and things i wanna add
 - [ ] games (ofc)
-- [ ] apps (in progress rn)
-- [x] proxy (ofc)
+- [x] apps
+- [x] proxy
 - [x] movies
 - [ ] chatroom
 - [ ] accounts
