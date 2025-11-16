@@ -11,7 +11,7 @@
     <script src="/uv/uv.config.js"></script>
     <script src="/baremux/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="/assets/js/t.js"></script>
+    <script src="/assets/js/t.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script>
     <script src="/sj/scramjet.all.js"></script>
     <link rel="stylesheet" href="/styles/index.css">
@@ -38,6 +38,7 @@
                 }
             }
         );
+
     </script>
     <script>
         async function signUp(u, p) {
@@ -82,38 +83,70 @@
             try {
                 const { data: { session }, error } = await window.supabase.auth.getSession();
                 if (error) throw error;
-
-                if (!session) {
-                    return null;
-                }
-
-                const now = Math.floor(Date.now() / 1000);
-                if (session.expires_at && session.expires_at < now) {
-                    const { data, error: refreshError } = await window.supabase.auth.refreshSession();
-                    if (refreshError) {
-                        await window.supabase.auth.signOut();
-                        return null;
-                    }
-                    return data.session?.user || null;
-                }
-
-                return session.user;
+                return session?.user || null;
             } catch (error) {
                 console.error('Get user error:', error);
                 return null;
             }
         }
-
-        async function ensureValidSession() {
-            const user = await getUser();
-            if (!user) {
-                throw new Error('No valid session');
-            }
-            return user;
-        }
     </script>
     <script>
         newTab()
+    </script>
+    <script>
+
+
+        function toast(icon, msg) {
+            const container = document.querySelector(".toast-container")
+            const newToast = document.createElement("div")
+            const newToastIcon = document.createElement("i")
+            newToastIcon.classList.add("toast-icon", "lucide", "fas", "fa-icon-lol")
+            const newToastMsg = document.createElement("span")
+            newToastMsg.classList.add("toast-msg")
+            newToast.classList.add("toast", "bg-slate-900", "transition-all", "relative", "duration-300", "shadow-black/30", "shadow-lg", "p-4", "h-fit", "w-1/1", "flex", "rounded-full", "m-3", "border", "border-white/10")
+            newToast.style.right = "-120%"
+            container.appendChild(newToast)
+            newToast.appendChild(newToastIcon)
+            newToast.appendChild(newToastMsg)
+
+            switch (icon) {
+                case "success":
+                    if (newToastIcon && newToastMsg) {
+                        newToastIcon.classList.add("fa-circle-check")
+                        newToastMsg.textContent = msg
+                    }
+                    break
+                case "info":
+                    newToastIcon.classList.add("fa-circle-info")
+                    newToastMsg.textContent = msg
+                    break;
+                case "error":
+                    newToastIcon.classList.add("fa-circle-xmark")
+                    newToastMsg.textContent = msg
+                case "warn":
+                    newToastIcon.classList.add("fa-warning")
+                    newToastMsg.textContent = msg
+                case "log":
+                    newToastIcon.classList.add("fa-memo-circle-info")
+                    newToastMsg.textContent = msg
+            }
+
+            setTimeout(() => {
+                newToast.style.right = "4%"
+            }, 25)
+
+            setTimeout(() => {
+                newToast.style.right = "-120%"
+            }, 4000)
+
+            setTimeout(() => {
+                newToast.remove()
+            }, 4325)
+        }
+
+        function showToast(type, message, icon) {
+            toast(type, message)
+        }
     </script>
 
     <script>
@@ -128,6 +161,8 @@
 
                     const authBtn = document.querySelector("#auth-section a");
                     authBtn.setAttribute("onclick", "toggleDashboard()");
+
+                    showToast("success", `Logged in as ${user.email.split("@")[0]}`, "fas fa-check-circle");
                 }
             } catch (error) {
                 console.error('Auth check error:', error);
@@ -177,7 +212,9 @@
                     toggleAuthMode();
                 } else {
                     await signIn(username, password);
+                    showToast("success", "Logged in!", "fas fa-check-circle");
                     toggleAuth();
+                    await checkAuth();
                     document.getElementById("auth-username").value = "";
                     document.getElementById("auth-password").value = "";
                 }
@@ -192,14 +229,6 @@
 
         async function handleSignOut() {
             try {
-                const { data: { session } } = await window.supabase.auth.getSession();
-                if (!session) {
-                    showToast("info", "Already signed out", "fas fa-info-circle");
-                    localStorage.clear();
-                    window.location.reload();
-                    return;
-                }
-
                 await signOut();
                 showToast("success", "Signed out. Reloading...", "fas fa-check-circle");
                 document.querySelector("#auth-section i").classList.replace("fa-user-check", "fa-user");
@@ -208,40 +237,23 @@
                 const authBtn = document.querySelector("#auth-section a");
                 authBtn.setAttribute("onclick", "toggleAuth()");
 
-                localStorage.clear();
-
                 setTimeout(() => {
                     window.location.reload();
                 }, 1000);
             } catch (error) {
-                console.error('Sign out error:', error);
-                showToast("error", "Sign out failed, clearing data...", "fas fa-times-circle");
-                localStorage.clear();
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
+                showToast("error", "Sign out failed", "fas fa-times-circle");
             }
         }
 
+        window.addEventListener("load", async () => {
+            await new Promise(resolve => setTimeout(resolve, 500));
+            await checkAuth();
+        });
+
         window.supabase.auth.onAuthStateChange((event, session) => {
             console.log('Auth state changed:', event, session);
-            if (event === 'SIGNED_IN' && session?.user) {
-                document.querySelector("#auth-section i").classList.replace("fa-user", "fa-user-check");
-                document.getElementById("signout-btn").style.display = "block";
-
-                const authBtn = document.querySelector("#auth-section a");
-                authBtn.setAttribute("onclick", "toggleDashboard()");
-
-                showToast("success", `Logged in as ${session.user.email.split("@")[0]}`, "fas fa-check-circle");
-            } else if (event === 'SIGNED_OUT') {
-                document.querySelector("#auth-section i")?.classList.replace("fa-user-check", "fa-user");
-                const signoutBtn = document.getElementById("signout-btn");
-                if (signoutBtn) signoutBtn.style.display = "none";
-
-                const authBtn = document.querySelector("#auth-section a");
-                if (authBtn) authBtn.setAttribute("onclick", "toggleAuth()");
-            } else if (event === 'TOKEN_REFRESHED') {
-                console.log('Token refreshed successfully');
+            if (event === 'SIGNED_IN') {
+                checkAuth();
             }
         });
     </script>
@@ -993,38 +1005,57 @@
         }
 
         async function updateSitesVisited() {
-            try {
-                const user = await ensureValidSession();
-                if (!user) return;
+            const user = await getUser()
 
-                const currentSites = user.user_metadata?.sitesVisited || 0;
+            const stats = JSON.parse(localStorage.getItem(`breeze_stats_${user.id}`)) || {
+                timeSpent: 0,
+                sitesVisited: 0,
+                activity: []
+            }
 
-                const { error } = await window.supabase.auth.updateUser({
-                    data: { sitesVisited: currentSites + 1 }
-                });
+            stats.sitesVisited++
 
-                if (error) throw error;
-            } catch (error) {
-                console.error('Update sites error:', error);
+            console.log(stats.sitesVisited)
+
+            localStorage.setItem(`breeze_stats_${user.id}`, JSON.stringify(stats))
+
+            setTimeout(pushSites(), 2000)
+        }
+
+        async function pushSites() {
+            const user = await getUser()
+
+            if (!user) {
+                return
+            }
+
+            const stats = JSON.parse(localStorage.getItem(`breeze_stats_${user.id}`))
+
+            if (!stats.sitesVisited) return
+
+            console.log(stats.sitesVisited)
+
+            const { error } = await window.supabase.auth.updateUser({
+                data: { sitesVisited: stats.sitesVisited }
+            });
+
+            if (error) {
+                showToast("error", error.message, "fas fa-times-circle")
+                console.log("there was an error updated sites visited: " + error.message)
+                throw error
             }
         }
 
         async function updateTimeBrowsing() {
-            try {
-                const user = await getUser();
-                if (!user) return;
+            const user = await getUser()
 
-                const stats = JSON.parse(localStorage.getItem(`breeze_stats_${user.id}`)) || {
-                    timeSpent: 0,
-                    sitesVisited: 0,
-                    activity: []
-                };
-
-                stats.timeSpent++;
-                localStorage.setItem(`breeze_stats_${user.id}`, JSON.stringify(stats));
-            } catch (error) {
-                console.error('Update time error:', error);
+            const stats = JSON.parse(localStorage.getItem(`breeze_stats_${user.id}`)) || {
+                timeSpent: 0,
+                sitesVisited: 0,
+                activity: []
             }
+
+            stats.timeSpent++
         }
 
         async function go(u) {
@@ -1190,51 +1221,37 @@
         }
 
         async function loadDashboard() {
-            try {
-                const user = await ensureValidSession();
-                if (!user) {
-                    showToast("error", "Please sign in to view dashboard", "fas fa-times-circle");
-                    toggleDashboard();
-                    toggleAuth();
-                    return;
-                }
+            const user = await getUser();
+            if (!user) return;
 
-                document.getElementById("dashboard-username").textContent = user.user_metadata?.username || user.email.split("@")[0];
-                document.getElementById("dashboard-email").textContent = user.email;
+            document.getElementById("dashboard-username").textContent = user.user_metadata?.username || user.email.split("@")[0];
+            document.getElementById("dashboard-email").textContent = user.email;
 
-                if (user.user_metadata?.avatar_url) {
-                    document.getElementById("dashboard-pfp").src = user.user_metadata.avatar_url;
-                }
+            if (user.user_metadata?.avatar_url) {
+                document.getElementById("dashboard-pfp").src = user.user_metadata.avatar_url;
+            }
 
-                const accountAge = Math.floor((Date.now() - new Date(user.created_at).getTime()) / (1000 * 60 * 60 * 24));
-                document.getElementById("account-age").textContent = `${accountAge}d`;
-                console.log(`Current account age: ${accountAge}`)
+            const accountAge = Math.floor((Date.now() - new Date(user.created_at).getTime()) / (1000 * 60 * 60 * 24));
+            document.getElementById("account-age").textContent = `${accountAge}d`;
+            console.log(`Current account age: ${accountAge}`)
 
-                const stats = JSON.parse(localStorage.getItem(`breeze_stats_${user.id}`)) || {
-                    timeSpent: 0,
-                    sitesVisited: 0,
-                    activity: []
-                };
+            const stats = JSON.parse(localStorage.getItem(`breeze_stats_${user.id}`));
 
-                const hours = Math.floor(stats.timeSpent / 3600);
-                const minutes = Math.floor(stats.timeSpent % 3600 / 60);
-                document.getElementById("time-spent").textContent = `${hours}h ${minutes}m`;
-                console.log(`Total Time: ${hours}h, ${minutes}m`)
-                document.getElementById("sites-visited").textContent = user.user_metadata?.sitesVisited || 0;
-                console.log(`Total sites visited: ${user.user_metadata?.sitesVisited}`)
+            const hours = Math.floor(stats.timeSpent / 3600);
+            const minutes = Math.floor(stats.timeSpent % 3600 / 60);
+            document.getElementById("time-spent").textContent = `${hours}h ${minutes}m`;
+            console.log(`Total Time: ${hours}h, ${minutes}m`)
+            document.getElementById("sites-visited").textContent = user.user_metadata?.sitesVisited;
+            console.log(`Total sites visited: ${user.user_metadata?.sitesVisited}`)
 
-                const activityList = document.getElementById("recent-activity");
-                if (stats.activity && stats.activity.length > 0) {
-                    activityList.innerHTML = stats.activity.slice(-10).reverse().map(item => `
-                <div class="activity-item">
-                    <p>${item.url}</p>
-                    <span>${new Date(item.time).toLocaleTimeString()}</span>
-                </div>
-            `).join('');
-                }
-            } catch (error) {
-                console.error('Load dashboard error:', error);
-                showToast("error", "Failed to load dashboard", "fas fa-times-circle");
+            const activityList = document.getElementById("recent-activity");
+            if (stats.activity && stats.activity.length > 0) {
+                activityList.innerHTML = stats.activity.slice(-10).reverse().map(item => `
+            <div class="activity-item">
+                <p>${item.url}</p>
+                <span>${new Date(item.time).toLocaleTimeString()}</span>
+            </div>
+        `).join('');
             }
         }
 
@@ -1247,8 +1264,6 @@
                 const base64 = event.target.result;
 
                 try {
-                    await ensureValidSession();
-
                     const { error } = await window.supabase.auth.updateUser({
                         data: { avatar_url: base64 }
                     });
@@ -1269,8 +1284,6 @@
             if (!newUsername) return;
 
             try {
-                await ensureValidSession();
-
                 const { error } = await window.supabase.auth.updateUser({
                     data: { username: newUsername }
                 });
@@ -1289,8 +1302,6 @@
             if (!newPassword) return;
 
             try {
-                await ensureValidSession();
-
                 const { error } = await window.supabase.auth.updateUser({
                     password: newPassword
                 });
@@ -1306,7 +1317,11 @@
         setInterval(async () => {
             const user = await getUser();
             if (user) {
-                await updateTimeBrowsing();
+                const stats = JSON.parse(localStorage.getItem(`breeze_stats_${user.id}`)) || { timeSpent: 0, sitesVisited: 0, activity: [] };
+                stats.timeSpent += 1;
+                console.log("Time updated: " + stats.timeSpent)
+                console.log("Minutes total: " + Math.floor(stats.timeSpent % 3600 / 60))
+                localStorage.setItem(`breeze_stats_${user.id}`, JSON.stringify(stats));
             }
         }, 1000);
 
