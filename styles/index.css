@@ -316,13 +316,27 @@ p a:hover {
 }
 
 .settings-hidden {
-    transform: translate(-50%, -50%) scale(.95);
+    transform: translate(-50%, -50%) scale(.9);
     opacity: 0;
     pointer-events: none;
     transform-origin: center center;
 }
 
 .settings-shown {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    pointer-events: all;
+    transform-origin: center center;
+}
+
+.apps-wrapper.settings-hidden {
+    transform: translate(-50%, -50%) scale(.9);
+    opacity: 0;
+    pointer-events: none;
+    transform-origin: center center;
+}
+
+.apps-wrapper.settings-shown {
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
     pointer-events: all;
@@ -498,4 +512,57 @@ p a:hover {
 
 .newtab:hover {
     background: #3d3d3d;
+}
+
+.apps-wrapper {
+    position: fixed;
+    height: 70vh;
+    width: 500px;
+    padding: 15px;
+    background: rgb(10 10 10);
+    border-radius: 25px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 6;
+    transition: 0.2s;
+    transform-origin: center center;
+}
+
+.apps-container::-webkit-scrollbar {
+    scrollbar-width: thin;
+}
+
+.app {
+    background: #0d0d0d;
+    border-radius: 25px;
+    height: 125px;
+    width: 100%;
+    display: flex;
+    transition: 0.2s;
+    cursor: pointer;
+    margin-bottom: 3px;
+}
+
+.app img {
+    height: 100px;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 3%;
+    border-radius: 20px;
+    aspect-ratio: 1;
+}
+
+.app h1 {
+    font-weight: medium;
+    font-size: 20px;
+    position: relative;
+    top: 85%;
+    transform: translateY(-50%);
+    margin-left: 7%;
+}
+
+.app:hover {
+    background-color: #2d2d2d;
 }

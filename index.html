@@ -43,7 +43,7 @@
                 </a>
             </li>
             <li>
-                <a onclick="navTo('apps')" href="#" data-page="apps">
+                <a onclick="toggleApps()" href="#" data-page="apps">
                     <i class="fas fa-grid"></i>
                 </a>
             </li>
@@ -202,7 +202,7 @@
                     <button onclick="full()">
                         <i class="far fa-expand"></i>
                     </button>
-                    <button onclick="eruda.init()">
+                    <button onclick="launchEruda()">
                         <i class="far fa-square-code"></i>
                     </button>
                     <button onclick="hideBrowser()">
@@ -213,7 +213,67 @@
         </div>
     </div>
 
+    <div class="apps-wrapper settings-hidden">
+        <input onkeyup="searchApps(this.value)" type="text" style="font-family: Arial;"
+            placeholder="search through the apps..." id="apps-search"
+            class="h-fit p-4 px-5 w-[475px] bg-[#0f0f0f] border-none absolute left-1/2 translate-x-[-50%] rounded-2xl transition-all focus:bg-[#1d1d1d] focus:outline-none ">
+        <br><br><br>
+        <div class="apps-container h-[83%] overflow-y-scroll w-[475px] flex flex-wrap w-7/8 absolute left-1/2 translate-x-[-50%] justify-center">
+        </div>
+    </div>
+
     <script src="/assets/js/dropdown.js"></script>
+
+    <script>
+        let res
+        let data
+
+        const aCont = document.querySelector(".apps-container")
+
+        async function gj() {
+            res = await fetch("/assets/json/apps.json");
+            data = await res.json()
+        }
+
+        function load() {
+            gj().then(() => {
+                console.log(
+                    "%cbreeze." + "%c recieved json data!",
+                    "color: white; background: linear-gradient(to bottom right, #040c16, #000000); border-radius: 5px; font-weight: bold; padding: 6px; font-family: sans-serif;",
+                    "color: white; background: transparent; border-radius: 0px; padding: 0px;"
+                )
+            }).then(() => {
+                data.forEach(item => {
+                    const newAppContainer = document.createElement("button")
+                    const newImage = document.createElement("img")
+                    const newTitle = document.createElement("h1")
+
+                    newAppContainer.classList.add("app")
+                    newAppContainer.setAttribute("onclick", `openApp(${item.url})`)
+                    newTitle.textContent = item.name
+                    newImage.src = item.img
+
+                    newAppContainer.appendChild(newImage)
+                    newAppContainer.appendChild(newTitle)
+
+                    aCont.appendChild(newAppContainer)
+                })
+            })
+        }
+
+        load()
+
+        function searchApps(term) {
+            const apps = document.querySelectorAll(".app")
+            apps.forEach((app) => {
+                if (!app.querySelector("h1").textContent.toLowerCase().includes(term.toLowerCase())) { // oh wow thats a lot of functions
+                    app.style.display = "none"
+                } else {
+                    app.style.display = "flex"
+                }
+            })
+        }
+    </script>
 
     <script>
         let aTab = 0
@@ -441,7 +501,7 @@
 
                 if (decodedUrl && decodedUrl !== cTab.url) {
                     cTab.url = decodedUrl
-                    
+
                     const ubar = document.getElementById("searchbar")
                     if (ubar) ubar.value = decodedUrl
 
@@ -499,13 +559,13 @@
                             const titleEl = tabEl.querySelector("span")
                             if (titleEl) titleEl.textContent = new URL(cTab.url).hostname
                         }
-                        
+
                         updateUrlFromIframe(viewframe)
                     }
                 }
             } catch (e) {
                 console.error("There was an error while loading the page:", e)
-                alert("There was an error while loading the page: " + e)
+                showToast("error", "There was a problem loading the page. Check the console for more info.", "fas fa-times-circle")
             }
         }
 
@@ -572,17 +632,23 @@
             b.style.pointerEvents = "none"
         }
 
-        setInterval(() => {
-            const viewframe = document.querySelector(`.viewframe[data-frame-id="${aTab}"]`)
-            if (viewframe && viewframe.src) {
-                updateUrlFromIframe(viewframe)
+        async function launchEruda() {
+            showToast("info", "Launching Eruda...", "fas fa-info-circle")
+            try {
+                eruda.init();
+                showToast("success", "Successfully injected Eruda", "fa-solid fa-check-circle")
+            } catch (e) {
+                showToast("error", "Failed to inject Eruda", "fas fa-times-circle")
             }
-        }, 1000)
+        }
+
     </script>
 
     <script>
         const settingsHolder = document.querySelector(".settings-container")
         const settingsViewframe = document.querySelector(".settings-content-container")
+
+        const appsHolder = document.querySelector(".apps-wrapper")
 
         const general = document.querySelector("#settings-general")
         const cloaking = document.querySelector("#settings-cloaking")
@@ -611,6 +677,9 @@
 
         function toggleSettings() {
             if (settingsHolder.classList.contains("settings-hidden")) {
+                if (appsHolder.classList.contains("settings-shown")) {
+                    toggleApps()
+                }
                 const newBlurOverlay = document.createElement("div")
                 newBlurOverlay.classList.add("blurOverlay")
                 document.body.appendChild(newBlurOverlay)
@@ -623,6 +692,23 @@
                 newBlurOverlay.remove()
             }
         }
+        function toggleApps() {
+                if (appsHolder.classList.contains("settings-hidden")) {
+                    if (settingsHolder.classList.contains("settings-shown")) {
+                        toggleSettings()
+                    }
+                    const newBlurOverlay = document.createElement("div")
+                    newBlurOverlay.classList.add("blurOverlay")
+                    document.body.appendChild(newBlurOverlay)
+                    appsHolder.classList.remove("settings-hidden")
+                    appsHolder.classList.add("settings-shown")
+                } else {
+                    appsHolder.classList.remove("settings-shown")
+                    appsHolder.classList.add("settings-hidden")
+                    const newBlurOverlay = document.querySelector(".blurOverlay")
+                    newBlurOverlay.remove()
+                }
+            }
     </script>
     <script>
         newTab()
