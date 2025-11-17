@@ -81,9 +81,9 @@
 
         async function getUser() {
             try {
-                const { data: { session }, error } = await window.supabase.auth.getSession();
+                const { data: { user }, error } = await window.supabase.auth.getUser();
                 if (error) throw error;
-                return session?.user || null;
+                return user;
             } catch (error) {
                 console.error('Get user error:', error);
                 return null;
@@ -250,10 +250,16 @@
             await checkAuth();
         });
 
-        window.supabase.auth.onAuthStateChange((event, session) => {
+        window.supabase.auth.onAuthStateChange(async (event, session) => {
             console.log('Auth state changed:', event, session);
-            if (event === 'SIGNED_IN') {
-                checkAuth();
+    
+            if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') {
+                await checkAuth();
+            } else if (event === 'SIGNED_OUT') {
+                document.querySelector("#auth-section i")?.classList.replace("fa-user-check", "fa-user");
+                document.getElementById("signout-btn").style.display = "none";
+                const authBtn = document.querySelector("#auth-section a");
+                authBtn?.setAttribute("onclick", "toggleAuth()");
             }
         });
     </script>
