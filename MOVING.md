@@ -12,4 +12,4 @@ main- https://cherri.onl/
 
 x8r link- https://cherri.x8r.dev/
 
-cloudflare- https://cherri.pages.dev/
+cloudflare- https://usecherri.pages.dev/
