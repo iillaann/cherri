@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>cherri</title>
     <meta name="title" content="Cherri">
-    <meta name="description" content="A state of the art unblocked games website. Clean, customizable, and now in pink!">
+    <meta name="description"
+        content="A state of the art unblocked games website. Clean, customizable, and now in pink!">
     <meta name="keywords"
         content="unblocked, ub, school, games, gn-math, gnmath, unblockedgames, proxy, ultraviolet, scramjet, roblox, fortnite, nowgg, movies, tv, browser, webos, ubgames, apps, discord, freemovies">
     <meta name="robots" content="index, nofollow">
@@ -24,8 +25,76 @@
     <script src="/assets/js/lib/particles.js"></script>
     <script src="/assets/js/colors.js"></script>
     <script src="/assets/js/cursor.js"></script>
-    <script defer src="https://cloud.umami.is/script.js" data-website-id="aa852720-724b-4441-be4c-6db9ef160eb9"></script>
+    <script defer src="https://cloud.umami.is/script.js"
+        data-website-id="aa852720-724b-4441-be4c-6db9ef160eb9"></script>
+    <script src="/assets/js/lib/detectmobile.js"></script>
 </head>
+<style>
+    #particles-container {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        opacity: 0.5;
+    }
+
+    .container {
+        display: flex;
+    }
+
+    .centerc {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        position: fixed;
+    }
+
+    .container h1 {
+        margin-left: 15px;
+        font-size: 3rem;
+        color: var(--bright-text);
+        transform: translateY(-10px);
+        margin-bottom: -27px;
+    }
+
+    .container p {
+        margin-left: 15px;
+        font-size: 1.2rem;
+        color: var(--muted-text);
+
+    }
+
+    .container img {
+        width: 120px;
+        height: 120px;
+    }
+
+    .logo {
+        position: relative;
+        height: 120px;
+        width: 120px;
+    }
+
+    .logo::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--accent);
+        mask-image: url(/assets/img/fav.png);
+        mask-size: contain;
+        mask-mode: luminance;
+        mask-repeat: no-repeat;
+        mask-position: center;
+        -webkit-mask-image: url(/assets/img/fav.png);
+        -webkit-mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+    }
+</style>
 
 <body style="background: var(--bg-5);" onload="showWN()">
 
@@ -33,87 +102,135 @@
 
     <nav>
         <ul id="nav-ul" class="">
-            <li>
-                <a class="active" href="javascript:nav('home')">
-                    <i class="ri ri-home-4-line"></i>
-                    Home
-                </a>
-            </li>
-            <li>
-                <a href="javascript:nav('games')">
-                    <i class="ri ri-gamepad-line"></i>
-                    Games
-                </a>
-            </li>
-            <li>
-                <a href="javascript:nav('apps')">
-                    <i class="ri ri-apps-line"></i>
-                    Apps
-                </a>
-            </li>
-            <li>
-                <a href="javascript:nav('browser')">
-                    <i class="ri ri-seo-line"></i>
-                    Browser
-                </a>
-            </li>
-            <li>
-                <a href="javascript:nav('movies')">
-                    <i class="ri ri-film-line"></i>
-                    Movies
-                </a>
-            </li>
-            <!--
-            <li>
-                <a href="javascript:nav('yt')">
-                    <i class="ri ri-video-line"></i>
-                    Youtube UB
-                </a>
-            </li>
-            -->
-            <div class="bottom-nav">
-                <li>
-                    <a href="javascript:window.open('https://discord.gg/hUYzETaQ9U', '_blank')">
-                        <i class="ri ri-discord-fill"></i>
-                        Discord
-                    </a>
-                </li>
-                <li>
-                    <a href="javascript:nav('partners')">
-                        <i class="ri ri-shake-hands-fill"></i>
-                        Partners
-                    </a>
-                </li>
-                <li>
-                    <a href="javascript:nav('settings')">
-                        <i class="ri ri-settings-3-line"></i>
-                        Settings
-                    </a>
-                </li>
-                <li>
-                    <a href="javascript:window.open('https://github.com/x8rr/cherri', '_blank')">
-                        <i class="ri ri-github-fill"></i>
-                        v0.0.1 Beta 2.1
-                    </a>
-                </li>
-                <li>
-                    <a href="javascript:collapseNav()">
-                        <i class="ri ri-arrow-left-s-line" style="display: inline-block;" id="cBtn"></i>
-                        Collapse
-                    </a>
-                </li>
+            <div class="container" style="display: flex; flex-direction: row;">
+                <div class="top-nav">
+                    <li>
+                        <a class="active" href="/">
+                            <i class="ri ri-home-4-line"></i>
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/pages/games.html">
+                            <i class="ri ri-gamepad-line"></i>
+                            Games
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/pages/apps.html">
+                            <i class="ri ri-apps-line"></i>
+                            Apps
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/pages/browser.html">
+                            <i class="ri ri-seo-line"></i>
+                            Browser
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/pages/movieframe.html">
+                            <i class="ri ri-film-line"></i>
+                            Movies
+                        </a>
+                    </li>
+                </div>
+                <!--
+                            <li>
+                                <a href="javascript:nav('yt')">
+                                    <i class="ri ri-video-line"></i>
+                                    Youtube UB
+                                </a>
+                            </li>
+                            -->
+                <div>
+                    <li>
+                        <a style="cursor: pointer;" onclick="window.open('https://discord.gg/hUYzETaQ9U', '_blank')">
+                            <i class="ri ri-discord-fill"></i>
+                            Discord
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/pages/partners.html">
+                            <i class="ri ri-shake-hands-fill"></i>
+                            Partners
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/pages/settings.html">
+                            <i class="ri ri-settings-3-line"></i>
+                            Settings
+                        </a>
+                    </li>
+                    <li>
+                        <a style="cursor: pointer;"
+                            onclick="window.open('https://github.com/x8rr/cherri/releases/latest', '_blank')">
+                            <i class="ri ri-github-fill"></i>
+                            Beta 2.2
+                        </a>
+                    </li>
+                    <!--
+                    <li>
+                        <a href="javascript:collapseNav()">
+                            <i class="ri ri-arrow-left-s-line" style="display: inline-block;" id="cBtn"></i>
+                            Collapse
+                        </a>
+                    </li>
+                    -->
+                </div>
             </div>
         </ul>
     </nav>
 
-    <div class="whatsnew" data-modal-id="3">
-        <h2 class="wtitle">v0.0.1 Beta 2.1</h2>
-        <li>Added Void theme</li>
-
-        <button onclick="closeWN()">ooh</button>
+    <div class="nav-logo">
+        <img src="/assets/img/fav.png" alt="" onclick="
+            ul.classList.add('active');
+            const blurr = document.createElement('div')
+            blurr.classList.add('bluroverlay')
+            document.body.append(blurr)
+            blurr.addEventListener('click', () => {
+                ul.classList.remove('active')
+                blurr.remove()
+            })
+        ">
     </div>
 
-    <iframe src="/pages/home.html" frameborder="0" id="pageframe"></iframe>
+    <div id="particles-container"></div>
+
+    <div class="centerc">
+        <div class="container">
+            <div class="logo">
+                <img src="/assets/img/fav.png" alt="">
+            </div>
+            <div>
+                <h1>cherri</h1>
+                <p>a nice website for your games and stuff</p>
+            </div>
+        </div>
+        <br>
+        <input id="homesearch" style="text-align: center; position: absolute; left: 50%; transform: translateX(-50%);"
+            type="text" placeholder="Search for something or enter a URL here...">
+    </div>
+
+    <script>
+        particlesJS.load('particles-container', '/assets/json/config/particles.json', function () {
+            console.log('Particles.js config loaded');
+        });
+    </script>
+
+    <div class="whatsnew" data-modal-id="3">
+        <div class="imgdiv"></div>
+        <h2 class="wtitle">What's New</h2>
+        <li>Welcome to Cherri Beta 2.2! There have been some big changes in this update, such as a renewed navigation
+            system, this revamped popup, and the website is going under yet another design change.</li>
+
+        <h3>Main changes</h3>
+        <li class="quoted">New popup design</li>
+        <li class="quoted">New navigation system</li>
+        <li class="quoted">Website redesign</li>
+
+        <button onclick="closeWN()">Cool!</button>
+    </div>
 
     <script defer>
         document.querySelectorAll("li a").forEach(link => {
@@ -130,21 +247,23 @@
         const ul = document.getElementById("nav-ul")
         const frame = document.getElementById("pageframe")
         const collapseBtn = document.getElementById("cBtn")
+        /* 
         if (ul.classList.contains("collapsed")) {
             frame.style.width = "91.5%"
             frame.style.left = "90px"
             console.log("hi")
         } else {
-            frame.style.width = "calc(100% - 270px)"
-            frame.style.left = "250px"
+            frame.style.width = "calc(100% - 470px)"
+            frame.style.left = "450px"
             console.log("bye")
         }
+        */
 
         function collapseNav() {
             if (ul.classList.contains("collapsed")) {
                 ul.classList.remove("collapsed")
-                frame.style.width = "calc(100% - 270px)"
-                frame.style.left = "250px"
+                frame.style.width = "calc(100% - 470px)"
+                frame.style.left = "450px"
                 collapseBtn.classList.remove("rotate")
 
             } else {
@@ -176,8 +295,53 @@
                 const overlay = document.createElement("div")
                 overlay.classList.add("bluroverlay")
                 document.body.append(overlay)
+                overlay.addEventListener("click", () => {
+                    wn.style.opacity = "0"
+                    wn.style.transform = "translate(-50%, -50%) scale(.9)"
+                    wn.style.pointerEvents = "none"
+                    localStorage.setItem("cherri_wnid", wnid)
+                    overlay.remove()
+                })
             }
         }
+
+        window.addEventListener("keydown", (e) => {
+            if (e.ctrlKey && e.key === "m") {
+                console.log("Key pressed")
+                e.preventDefault()
+                if (!ul.classList.contains("active")) {
+                    ul.classList.add("active")
+                    const blurr = document.createElement("div")
+                    blurr.classList.add("bluroverlay")
+                    document.body.append(blurr)
+                    blurr.addEventListener("click", () => {
+                        blurr.remove()
+                        ul.classList.remove("active")
+                    })
+                } else {
+                    ul.classList.remove("active")
+                    const blurr = document.querySelector(".bluroverlay")
+                    blurr.remove()
+                }
+            }
+        })
+
+        const isM = isMobile()
+
+        const inp = document.getElementById("homesearch")
+        inp.addEventListener("keydown", e => {
+            if (e.key === "Enter") {
+                let url = inp.value
+                if (!url.includes(".") || url.includes(" ")) {
+                    url = "https://search.brave.com/search?q=" + encodeURIComponent(url);
+                } else {
+                    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                        url = "https://" + url;
+                    }
+                }
+                window.location.href = "/pages/browser.html?launch=" + url
+            }
+        })
     </script>
 </body>
 

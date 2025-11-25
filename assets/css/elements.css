@@ -12,9 +12,10 @@ html {
     inset: 0;
     height: 100%;
     width: 100%;
-    background-image: linear-gradient(to right, #80808012 1px, transparent 1px),
-        linear-gradient(to bottom, #80808012 1px, transparent 1px);
-    background-size: 24px 24px;
+    background-image: linear-gradient(to right, #8080800a 1px, transparent 1px),
+        linear-gradient(to bottom, #80808009 1px, transparent 1px);
+    mask-image: radial-gradient(at center, black 5%, transparent 90%);
+    background-size: 14px 14px;
 }
 
 ::selection {
@@ -54,19 +55,30 @@ ul  {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    height: 95vh;
+    height: 24vh;
     position: fixed;
-    left: 15px;
+    left: 50%;
     top: 50%;
-    transform: translateY(-50%);
-    width: 200px;
+    z-index: 2396238745;
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0;
+    pointer-events: none;
+    width: 375px;
     overflow: hidden;
     border-radius: 15px;
     background: var(--bg-2);
+    transform-origin: center center;
     transition: 0.3s;
     border: 1px solid var(--border-3);
     padding: 10px;
     font-weight: 400;
+}
+
+ul.active {
+    transform: translate(-50%, -50%) scale(1);
+    pointer-events: all;
+    opacity: 1;
+    z-index: 39846328745;
 }
 
 .bottom-nav {
@@ -98,7 +110,8 @@ li a {
     transition: 0.2s;
     border-radius: 10px;
     margin-bottom: 5px;
-    width: 84%;
+    margin-right: 5px;
+    width: 150px;
 }
 
 li a:hover {
@@ -131,9 +144,9 @@ li a .ri {
 #pageframe {
     position: fixed;
     top: 50%;
-    transform: translateY(-50%);
-    left: 250px;
-    width: calc(100% - 270px);
+    transform: translate(-50%, -50%);
+    left: 50%;
+    width: 98%;
     height: 97.2vh;
     border-radius: 15px;
     border: 1px solid var(--border-3);
@@ -234,26 +247,57 @@ input::placeholder {
     height: min-content;
     padding: 15px;
     padding-top: 20px;
-    padding-bottom: 50px;
     opacity: 0;
     pointer-events: none;
     border-radius: 15px;
     border: 1px solid var(--border-4);
-    width: 300px;
+    width: 400px;
     transition: 0.2s;
     transform-origin: center center !important;
+    overflow: hidden;
 }
 
 .wtitle {
-    margin-bottom: 10px;
+    margin-bottom: 27px;
     margin-top: 0;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 600 !important;
+    position: relative;
+}
+
+.wtitle::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -12px;
+    width: 25%;
+    height: 5px;
+    background: var(--bg-3);
 }
 
 .whatsnew li {
     margin-bottom: 10px;
+    text-wrap: wrap;
 }
 
-.whatsnew li::before {
+.whatsnew .imgdiv {
+    width: 112%;
+    position: relative;
+    left: 50%;
+    height: 155px;
+    transform: translateX(-50%);
+    margin-bottom: -05px;
+    background: url(/assets/img/cover.png);
+    background-position: center;
+    background-size: 130%;
+    top: -25px;
+    border-radius: 0px;
+    border-bottom: 1px solid var(--border-3);
+}
+
+.whatsnew li.quoted::before {
     content: "| ";
     font-size: 25px;
     line-height: 0;
@@ -267,10 +311,13 @@ input::placeholder {
     padding: 10px 20px;
     border-radius: 10px;
     border: 1px solid var(--border-4);
-    font-size: 17px;
-    position: absolute;
-    right: 5px;
+    font-size: 18px;
+    position: relative;
+    right: 0px;
+    width: 100%;
+    margin-top: 20px;
     transition: 0.2s;
+    font-weight: bold;
 }
 
 .whatsnew button:hover {
@@ -286,4 +333,17 @@ input::placeholder {
     top: 0;
     left: 0;
     backdrop-filter: blur(3px) brightness(0.8);
+}
+
+.nav-logo img {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    height: 45px;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.nav-logo img:hover {
+    scale: 1.1;
 }

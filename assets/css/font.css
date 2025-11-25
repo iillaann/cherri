@@ -4,7 +4,7 @@
 }
 
 @font-face {
-    font-family: Geist;
+    font-family: inter;
     src: url("/assets/fonts/inter.ttf");
 }
 
@@ -14,5 +14,5 @@
 }
 
 * {
-    font-family: geist, sans-serif;
+    font-family: inter, sans-serif;
 }

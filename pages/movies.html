@@ -14,6 +14,7 @@
     <link rel="shortcut icon" href="/assets/img/fav.png" type="image/x-icon" id="tabIcon">
     <link rel="stylesheet" href="/assets/css/colors.css" id="css-theme-link">
     <link rel="stylesheet" href="/assets/css/font.css">
+    <link rel="stylesheet" href="/assets/icons/fonts/remixicon.css">
     <script src="/assets/js/lib/particles.js"></script>
     <script src="/assets/js/colors.js"></script>
 </head>
@@ -34,7 +35,7 @@
     }
 
     * {
-        font-family: geist;
+        font-family: Inter;
     }
 
     button {
@@ -64,7 +65,7 @@
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        font-family: geist;
+        font-family: Inter;
     }
 
     ::-webkit-scrollbar {
@@ -146,8 +147,8 @@
                 class="bg-[var(--bg-5)] px-6 py-2 z-34 rounded-2xl disabled:opacity-50">
                 Previous
             </button>
-            <span class="px-6 py-2" style="font-family: geist;">Page <span x-text="currentPage"
-                    style="font-family: geist;"></span></span>
+            <span class="px-6 py-2" style="font-family: Inter;">Page <span x-text="currentPage"
+                    style="font-family: Inter;"></span></span>
             <button @click="changePage(currentPage + 1)" class="rounded-2xl bg-[var(--bg-5)] z-34 px-6 py-2 rounded">
                 Next
             </button>
