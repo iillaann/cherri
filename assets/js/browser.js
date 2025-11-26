@@ -1,20 +1,28 @@
 let aTab = 0;
 let tabCounter = 1;
 let bTabs = [];
-const tabCont = document.querySelector(".tabs");
-let tabFrame;
-let fUrl;
-const inp = document.getElementById("searchbar");
-
-inp.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    nav(inp.value);
-    console.log("i");
-  }
-});
-
 const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
 const wispUrl = localStorage.getItem("cherri_wispUrl") || "wss://wisp.rhw.one/";
+const bareUrl = "https://useclassplay.vercel.app/fq/";
+
+let searchE;
+const se = localStorage.getItem("cherri_searchEngine") || "DuckDuckGo";
+
+if (se === "DuckDuckGo") {
+  searchE = "https://duckduckgo.com/search?q=";
+} else if (se === "Bing") {
+  searchE = "https://bing.com/search?q=";
+} else if (se === "Google") {
+  searchE = "https://google.com/search?q=";
+} else if (se === "Startpage") {
+  searchE = "https://startpage.com/search?q=";
+} else if (se === "Qwant") {
+  searchE = "https://qwant.com/search?q=";
+} else {
+  searchE = "https://search.brave.com/search?q=";
+}
+
+connection.setTransport("/libcurl/index.mjs", [{ websocket: wispUrl }]);
 
 const CONFIG = {
   files: {
@@ -30,27 +38,8 @@ const scramjet = new ScramjetController({
 });
 scramjet.init();
 
-let searchE;
-
-const se = localStorage.getItem("cherri_se") || "DuckDuckGo";
-const bar = document.getElementById("urlbar");
-
-if (se === "DuckDuckGo") {
-  searchE = "https://duckduckgo.com/search?q=";
-} else if (se === "Bing") {
-  searchE = "https://bing.com/search?q=";
-} else if (se === "Google") {
-  searchE = "https://google.com/search?q=";
-} else if (se === "Startpage") {
-  searchE = "https://startpage.com/search?q=";
-} else if (se === "https://qwant.com/search?q=") {
-  bar.placeholder = "Search with Qwant or enter a URL here";
-} else {
-  bar.placeholder = "Search with Brave or enter a URL here";
-}
-connection.setTransport("/libcurl/index.mjs", [{ websocket: wispUrl }]);
-
 function newTab() {
+  const tabCont = document.querySelector(".tabs");
   const nTab = {
     id: tabCounter++,
     title: "New Tab",
@@ -68,12 +57,12 @@ function newTab() {
   tabElement.classList.add("tab", "hcontainer");
   tabElement.dataset.tabId = nTab.id;
   tabElement.innerHTML = `
-                <img src="/assets/img/fav.png" id="fav" data-fav-id="${nTab.id}" width="24" alt="">
-                    <span>
-                        New Tab
-                    </span>
-                <i class="ri-close-line close-btn ri"></i>
-                `;
+        <img src="/assets/fav.png" id="fav" data-fav-id="${nTab.id}" width="24" alt="">
+            <span>
+                New Tab
+            </span>
+        <i class="fas fa-times close-btn"></i>
+        `;
 
   tabElement.addEventListener("click", (e) => {
     if (!e.target.closest(".close-btn")) {
@@ -85,16 +74,15 @@ function newTab() {
   closebtn.addEventListener("click", (e) => {
     e.stopPropagation();
     closeTab(nTab.id);
-    console.log("closed tab");
   });
 
   tabCont.insertBefore(tabElement, ntBtn);
 
-  tabFrame = document.createElement("iframe");
+  const tabFrame = document.createElement("iframe");
   tabFrame.classList.add("viewframe", "browser-frame");
   tabFrame.dataset.frameId = nTab.id;
   tabFrame.setAttribute("allowfullscreen", "true");
-  tabFrame.src = "/pages/home.html";
+  tabFrame.src = "/newtab.html";
 
   document.body.appendChild(tabFrame);
 
@@ -121,7 +109,7 @@ function switchTab(tId) {
 
 function closeTab(tId) {
   if (bTabs.length === 1) {
-    alert("You cannot close the last tab!");
+    showToast("error", "Cannot close last tab!", "fas fa-circle-xmark");
     return;
   }
 
@@ -140,13 +128,11 @@ function closeTab(tId) {
     const newATab = bTabs[Math.max(0, tIndex - 1)];
     if (newATab) {
       switchTab(newATab.id);
-      console.log("woah");
     }
   }
 }
 
 function nav(i) {
-  console.log("e");
   if (!i.trim()) return;
 
   let url = i.trim();
@@ -167,9 +153,51 @@ function nav(i) {
 
   cTab.url = url;
 
-  const fUrl = scramjet.encodeUrl(url);
+  let fUrl;
+  if (
+    localStorage.getItem("cherri_backend") === "Scramjet" ||
+    localStorage.getItem("cherri_backend") === "scramjet" ||
+    !localStorage.getItem("cherri_backend")
+  ) {
+    fUrl = scramjet.encodeUrl(url);
+  } else if (localStorage.getItem("cherri_backend") === "Ultraviolet") {
+    fUrl = "/uv/service/" + __uv$config.encodeUrl(url);
+  } else {
+    fUrl = scramjet.encodeUrl(url);
+  }
 
   go(fUrl);
+}
+
+function updateUrlFromIframe(viewframe) {
+  try {
+    const cTab = bTabs.find((t) => t.id === aTab);
+    if (!cTab) return;
+
+    let decodedUrl;
+    const currentSrc = viewframe.src;
+
+    if (localStorage.getItem("cherri_backend") === "Ultraviolet") {
+      if (currentSrc.includes("/uv/service/")) {
+        decodedUrl = __uv$config.decodeUrl(currentSrc.split("/uv/service/")[1]);
+      }
+    } else {
+      decodedUrl = scramjet.decodeUrl(currentSrc);
+    }
+
+    if (decodedUrl && decodedUrl !== cTab.url) {
+      cTab.url = decodedUrl;
+
+      const ubar = document.getElementById("searchbar");
+      if (ubar) ubar.value = decodedUrl;
+
+      const favEl = document.querySelector(`#fav[data-fav-id="${aTab}"]`);
+      if (favEl)
+        favEl.src = `https://www.google.com/s2/favicons?domain=${decodedUrl}&sz=256`;
+    }
+  } catch (e) {
+    console.error("Error updating URL from iframe:", e);
+  }
 }
 
 async function go(u) {
@@ -177,7 +205,6 @@ async function go(u) {
     connection.setTransport("/libcurl/index.mjs", [{ websocket: wispUrl }]);
   }
 
-  console.log("a");
   const cTab = bTabs.find((t) => t.id === aTab);
   const favEl = document.querySelector(`#fav[data-fav-id="${aTab}"]`);
   const viewframe = document.querySelector(
@@ -200,7 +227,6 @@ async function go(u) {
 
   try {
     viewframe.src = u;
-    console.log("ooooo");
 
     viewframe.onload = () => {
       try {
@@ -216,7 +242,6 @@ async function go(u) {
 
         updateUrlFromIframe(viewframe);
       } catch (e) {
-        console.error("Error accessing iframe content:", e);
         const tabEl = document.querySelector(`.tab[data-tab-id="${aTab}"]`);
         if (tabEl) {
           const titleEl = tabEl.querySelector("span");
@@ -228,7 +253,48 @@ async function go(u) {
     };
   } catch (e) {
     console.error("There was an error while loading the page:", e);
+    showToast(
+      "error",
+      "There was a problem loading the page. Check the console for more info.",
+      "fas fa-times-circle"
+    );
   }
+}
+
+function rSearch(input) {
+  console.log("rSearch called with:", input);
+
+  const aw = document.querySelector(".apps-wrapper");
+
+  if (aw && aw.classList.contains("settings-shown")) {
+    toggleApps();
+  }
+
+  let url = input;
+  if (!url.includes(".") || url.includes(" ")) {
+    url = "https://search.brave.com/search?q=" + url;
+  } else {
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+      url = "https://" + url;
+    }
+  }
+
+  const b = document.querySelector(".browser-container");
+  const frames = document.querySelectorAll(".viewframe");
+
+  if (b) {
+    b.style.opacity = 1;
+    b.style.pointerEvents = "all";
+  }
+
+  frames.forEach((frame) => {
+    frame.style.opacity = 1;
+    frame.style.pointerEvents = "all";
+  });
+
+  newTab();
+  nav(url);
+  switchTab(aTab);
 }
 
 function b() {
@@ -239,10 +305,10 @@ function b() {
   const u = cTab.history[cTab.historyIndex];
   cTab.url = u;
   let furl;
-  const ba = localStorage.getItem("breeze_backend");
-  if (ba.toLowerCase() === "scramjet") {
+  const ba = localStorage.getItem("cherri_backend");
+  if (ba && ba.toLowerCase() === "scramjet") {
     furl = scramjet.encodeUrl(u);
-  } else if (ba.toLowerCase() === "ultraviolet") {
+  } else if (ba && ba.toLowerCase() === "ultraviolet") {
     furl = __uv$config.prefix + __uv$config.encodeUrl(u);
   } else {
     furl = scramjet.encodeUrl(u);
@@ -253,15 +319,16 @@ function b() {
 
 function f() {
   const cTab = bTabs.find((t) => t.id === aTab);
+  if (!cTab) return;
 
   cTab.historyIndex++;
   const u = cTab.history[cTab.historyIndex];
   cTab.url = u;
   let furl;
-  const ba = localStorage.getItem("breeze_backend");
-  if (ba.toLowerCase() === "scramjet") {
+  const ba = localStorage.getItem("cherri_backend");
+  if (ba && ba.toLowerCase() === "scramjet") {
     furl = scramjet.encodeUrl(u);
-  } else if (ba.toLowerCase() === "ultraviolet") {
+  } else if (ba && ba.toLowerCase() === "ultraviolet") {
     furl = __uv$config.prefix + __uv$config.encodeUrl(u);
   } else {
     furl = scramjet.encodeUrl(u);
@@ -274,8 +341,8 @@ function r() {
   const viewframe = document.querySelector(
     `.viewframe[data-frame-id="${aTab}"]`
   );
+  if (!viewframe) return;
   const curl = viewframe.src;
-
   viewframe.src = curl;
 }
 
@@ -283,51 +350,62 @@ function full() {
   const viewframe = document.querySelector(
     `.viewframe[data-frame-id="${aTab}"]`
   );
+  if (!viewframe) return;
   viewframe.requestFullscreen();
-  console.log("sdfkjhasdkjhfg");
 }
 
-function updateUrlFromIframe(viewframe) {
+function hideBrowser() {
+  const b = document.querySelector(".browser-container");
+  const frames = document.querySelectorAll(".viewframe");
+  if (b) {
+    b.style.opacity = 0;
+    b.style.pointerEvents = "none";
+  }
+  frames.forEach((frame) => {
+    frame.style.opacity = 0;
+    frame.style.pointerEvents = "none";
+  });
+}
+
+async function launchEruda() {
+  showToast("info", "Launching Eruda...", "fas fa-info-circle");
   try {
-    const cTab = bTabs.find((t) => t.id === aTab);
-    if (!cTab) return;
-
-    let decodedUrl;
-    const currentSrc = viewframe.src;
-
-    decodedUrl = scramjet.decodeUrl(currentSrc);
-
-    if (decodedUrl && decodedUrl !== cTab.url) {
-      cTab.url = decodedUrl;
-
-      const ubar = document.getElementById("searchbar");
-      if (ubar) ubar.value = decodedUrl;
-
-      const favEl = document.querySelector(`#fav[data-fav-id="${aTab}"]`);
-      if (favEl)
-        favEl.src = `https://www.google.com/s2/favicons?domain=${decodedUrl}&sz=256`;
-    }
+    eruda.init();
+    showToast(
+      "success",
+      "Successfully injected Eruda",
+      "fa-solid fa-check-circle"
+    );
   } catch (e) {
-    console.error("Error updating URL from iframe:", e);
+    showToast("error", "Failed to inject Eruda", "fas fa-times-circle");
   }
 }
 
-const viewframe = document.querySelector(
-  `.viewframe[data-frame-id="${aTab}"]`
-);
+window.onload = () => {
+  console.log("Window loaded!");
+  const homesearch = document.getElementById("homesearch");
+  console.log("homesearch element:", homesearch);
 
-setInterval(() => {
-    if (viewframe) {
-        updateUrlFromIframe(viewframe);
-    }
-}, 1000);
+  if (!homesearch) {
+    console.error("homesearch element not found!");
+  } else {
+    homesearch.addEventListener("keydown", (e) => {
+      console.log("Got key:", e.key);
+      if (e.key === "Enter") {
+        console.log("Enter pressed, value:", homesearch.value);
+        rSearch(homesearch.value.trim());
+      }
+    });
+  }
 
-newTab()
+  const inp = document.getElementById("searchbar");
+  if (inp) {
+    inp.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        nav(inp.value);
+      }
+    });
+  }
 
-const urlParams = new URLSearchParams(window.location.search);
-const launchUrl = urlParams.get("launch");
-if (launchUrl) {
-  setTimeout(() => {
-    go(scramjet.encodeUrl(launchUrl));
-  }, 100);
-}
+  newTab();
+};

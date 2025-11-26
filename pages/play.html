@@ -14,87 +14,9 @@
     <script src="/assets/js/colors.js"></script>
 </head>
 
-<body>
+<body style="background: none !important;">
 
     <div class="grid"></div>
-
-    <nav>
-        <ul id="nav-ul" class="">
-            <div class="container" style="display: flex; flex-direction: row;">
-                <div class="top-nav">
-                    <li>
-                        <a class="active" href="/">
-                            <i class="ri ri-home-4-line"></i>
-                            Home
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/pages/games.html">
-                            <i class="ri ri-gamepad-line"></i>
-                            Games
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/pages/apps.html">
-                            <i class="ri ri-apps-line"></i>
-                            Apps
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/pages/browser.html">
-                            <i class="ri ri-seo-line"></i>
-                            Browser
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/pages/movieframe.html">
-                            <i class="ri ri-film-line"></i>
-                            Movies
-                        </a>
-                    </li>
-                </div>
-                <div>
-                    <li>
-                        <a style="cursor: pointer;" onclick="window.open('https://discord.gg/hUYzETaQ9U', '_blank')">
-                            <i class="ri ri-discord-fill"></i>
-                            Discord
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/pages/partners.html">
-                            <i class="ri ri-shake-hands-fill"></i>
-                            Partners
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/pages/settings.html">
-                            <i class="ri ri-settings-3-line"></i>
-                            Settings
-                        </a>
-                    </li>
-                    <li>
-                        <a style="cursor: pointer;" onclick="window.open('https://github.com/x8rr/cherri/releases/latest', '_blank')">
-                            <i class="ri ri-github-fill"></i>
-                            Beta 2.2
-                        </a>
-                    </li>
-                </div>
-            </div>
-        </ul>
-    </nav>
-
-    <div class="nav-logo">
-        <img src="/assets/img/fav.png" alt="" onclick="
-            ul.classList.add('active');
-            const blurr = document.createElement('div')
-            blurr.classList.add('bluroverlay')
-            document.body.append(blurr)
-            blurr.addEventListener('click', () => {
-                ul.classList.remove('active')
-                blurr.remove()
-            })
-        ">
-    </div>
 
     <style>
         #particles-container {
@@ -223,6 +145,17 @@
         .gamestuff button:hover {
             background: var(--bg-4);
         }
+
+        #bottom-tip {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 5px;
+            font-size: 14px;
+            font-weight: 500;
+            font-style: italic;
+            opacity: .5;
+        }
     </style>
 
     <div id="particles-container"></div>
@@ -241,8 +174,8 @@
             </button>
         </div>
     </div>
-    
-    <a href="/pages/games.html" class="uanim" style="position: absolute; top: 17px; left: 50%; transform: translateX(-50%);">Back to games</a>
+
+    <p id="bottom-tip">If a game doesn't work, try popping it out!</p>
 
     <script>
         particlesJS.load('particles-container', '/assets/json/config/particles.json', function () {

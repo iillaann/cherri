@@ -13,6 +13,11 @@
     src: url("/assets/fonts/geist.ttf");
 }
 
+@font-face {
+    font-family: lexend;
+    src: url("/assets/fonts/lexend.ttf");
+}
+
 * {
-    font-family: inter, sans-serif;
+    font-family: lexend, sans-serif;
 }
