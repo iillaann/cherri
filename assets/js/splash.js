@@ -26,7 +26,7 @@ const splashes = [
     "better than study hall",
     "banana mode",
     "my dog ate my homework",
-    "'As you can see, I am getting robbed'",
+    "&quot;As you can see, I am getting robbed&quot;",
     "the f students are NOT inventors twin",
     "the way you read this is so tuff twin",
     "consider touching grass?",
@@ -38,7 +38,7 @@ const splashes = [
     "six seven twin",
     "who ate the server",
     "ok maybe i lied",
-    "'Max what is this...depressing bean?'",
+    "&quot;Max what is this...depressing bean?&quot;",
     "keyboard go brrr",
     "a sticky touchpad, you have",
     "made with -12% effort",
@@ -62,7 +62,7 @@ const splashes = [
     "don't wiggle your ram",
     "Some people might think",
     "ignore the smoke",
-    "'FIRST ZERO C*KE'",
+    "&quot;FIRST ZERO C*KE&quot;",
     "built in the dark",
     "fresh out of the oven",
     "i am self aware",
@@ -76,4 +76,4 @@ const randomSplashN = Math.floor(Math.random() * splashes.length)
 const randomSplash = splashes[randomSplashN]
 
 const splashTextEl = document.getElementById("splash")
-splashTextEl.textContent = randomSplash
+splashTextEl.innerHTML = randomSplash

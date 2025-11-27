@@ -372,8 +372,7 @@ p a:hover {
     position: fixed;
     top: 0;
     left: 0;
-    backdrop-filter: blur(2px);
-    pointer-events: none;
+    backdrop-filter: blur(3px);
 }
 
 .browser-container {
