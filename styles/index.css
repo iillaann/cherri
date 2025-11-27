@@ -309,7 +309,7 @@ p a {
     transition: 0.2s;
 }
 
-p a::after {
+p a:not(.release-link)::after {
     width: 100%;
     left: 0;
     bottom: 0px;
@@ -322,7 +322,7 @@ p a::after {
     transition: 0.2s transform;
 }
 
-p a:hover::after {
+p a:not(.release-link):hover::after {
     transform: scaleX(1);
     transform-origin: left;
 }
@@ -577,8 +577,9 @@ p a:hover {
     border-radius: 25px;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(1);
     z-index: 6;
+    opacity: 1;
     transition: 0.2s;
     transform-origin: center center;
 }

@@ -139,7 +139,7 @@
                     </div>
 
                     <h2>Theme</h2>
-                    <p>The color scheme used across the whole site. Refresh to see changes.</p>
+                    <p>The color scheme used across the whole site. Some changes might not happen instantly, so refresh to see those take place.</p>
                     <div class="theme-selector">
                         <div class="theme-selected"></div>
                         <div class="theme-options">
@@ -225,7 +225,7 @@
             </div>
 
             <p class="absolute bottom-4 text-[var(--text)] font-medium text-sm">cherri <span
-                    class="opacity-70 bg-[var(--accent-2)] p-1 rounded-lg text-white"><a class="text-white"
+                    class="opacity-70 bg-[var(--accent-2)] p-1 rounded-lg text-white"><a class="text-white release-link"
                         href="https://github.com/x8rr/cherri/releases" target="_blank"
                         style="text-decoration: none;">beta 2.3</a></span></p>
         </div>
@@ -339,7 +339,7 @@
         })
     </script>
     <script>
-        const selectedStore = localStorage.getItem("cherri_gameStore").toLowerCase() ?? "classplay"
+        const selectedStore = localStorage.getItem("cherri_gameStore") ?? "Classplay"
 
         let res
         let data
@@ -380,7 +380,7 @@
         }
 
         load("apps", "apps", "Apps", "rSearch", "")
-        load(selectedStore, "games", "Games", "navTo", "play.html?launch=")
+        load(selectedStore.toLowerCase(), "games", "Games", "navTo", "play.html?launch=")
 
         function searchApps(term) {
             const apps = document.querySelectorAll(".app")
@@ -1009,7 +1009,7 @@
         async function launchEruda() {
             showToast("info", "Launching Eruda...", "fas fa-info-circle")
             try {
-                eruda.init();
+                await eruda.init();
                 showToast("success", "Successfully injected Eruda", "fa-solid fa-check-circle")
             } catch (e) {
                 showToast("error", "Failed to inject Eruda", "fas fa-times-circle")

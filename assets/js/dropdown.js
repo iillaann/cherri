@@ -269,6 +269,16 @@ createSelector(
 );
 
 document.addEventListener("decoyUpdated", e => applyDecoy(e.detail))
+document.addEventListener("themeUpdated", e => {
+  const link = document.getElementById("css-theme-link");
+  const theme = e.detail ?? "default";
+
+  if (theme !== "default") {
+    link.href = `/assets/css/themes/${theme}.css`;
+  } else {
+    link.href = "/assets/css/colors.css";
+  }
+})
 window.addEventListener("load", () => {
   applyDecoy(localStorage.getItem("decoy"));
   console.log("Cloaked as " + localStorage.getItem("decoy"))
