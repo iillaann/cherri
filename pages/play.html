@@ -431,7 +431,7 @@
             let elapsed = 0
 
             function format(ms) {
-                let totalSeconds = Math.floor(ms / 120000)
+                let totalSeconds = Math.floor(ms / 1000)
                 let hours = Math.floor(totalSeconds / 3600)
                 let minutes = Math.floor((totalSeconds % 3600) / 60)
                 let seconds = totalSeconds % 60
@@ -446,7 +446,7 @@
             setInterval(() => {
                 elapsed = 1000 + elapsed
                 sT.textContent = format(elapsed)
-            })
+            }, 1000)
         })
     </script>
 </body>
