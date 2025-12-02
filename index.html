@@ -583,8 +583,8 @@
                 }
                 const overlayOn = localStorage.getItem("cherri_useOverlay") ?? "yes"
                 if (overlayOn === "yes" && l.includes("/stores/")) {
-                    document.querySelector("ul").style.opacity = 0
-                    document.querySelector("ul").style.pointerEvents = "none"
+                    document.querySelector("nav").style.opacity = 0
+                    document.querySelector("nav").style.pointerEvents = "none"
                 }
                 homeContent.style.display = "none";
                 contentFrame.style.display = "block";
