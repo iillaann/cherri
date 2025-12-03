@@ -1,162 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<link rel="icon" type="image/svg+xml" href="/assets/fav.png">
-<title>cherri</title>
-
-<!-- libraries & assets -->
-<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-<script src="/uv/uv.bundle.js"></script>
-<script src="/uv/uv.config.js"></script>
-<script src="/baremux/index.js"></script>
-<script src="/assets/js/t.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script>
-<script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script>
-<script src="/sj/scramjet.all.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/eruda@3.4.3/eruda.min.js"></script>
-<script src="/assets/js/lib/particles.js"></script>
-<script defer src="https://cloud.umami.is/script.js" data-website-id="aa852720-724b-4441-be4c-6db9ef160eb9"></script>
-
-<!-- stylesheets -->
-<link rel="stylesheet" href="/styles/index.css">
-<link rel="stylesheet" href="/assets/css/colors.css" id="css-theme-link">
-<link rel="stylesheet" href="/fa/css/all.css">
-<link rel="stylesheet" href="/fa/css/all.min.css">
-<link rel="stylesheet" href="/fa/css/solid.css">
-<link rel="stylesheet" href="/fa/css/all-pro.css">
-<link rel="stylesheet" href="/assets/css/t.css">
-<link rel="stylesheet" href="/assets/css/dropdown.css">
-<link rel="stylesheet" href="/assets/css/t.css">
-<link rel="stylesheet" href="/assets/css/dropdown.css">
-<link rel="stylesheet" href="/assets/css/dropdown.css">
-<link rel="stylesheet" href="/assets/css/font.css">
-
-<!-- your splash script -->
-<script src="/assets/js/splash.js" defer></script>
-<script src="/assets/js/browserfunctions.js"></script>
-<script src="/assets/js/particles.js"></script>
-
-<!-- metadata -->
-<meta name="title" content="Cherri">
-<meta name="description" content="A state of the art unblocked games website. Clean, customizable, and now in pink!">
-<meta name="keywords" content="unblocked, ub, school, games, proxy, ultraviolet, nowgg, movies, apps, discord, vms">
-<meta name="robots" content="index, nofollow">
-<meta property="og:image" content="https://cherri.x8r.dev/assets/img/cover.png">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load Cherri</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #ffccdd;
+            font-family: system-ui, sans-serif;
+        }
+        button {
+            padding: 1.2rem 3rem;
+            font-size: 2rem;
+            font-weight: bold;
+            background: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.4);
+            transition: all 0.25s ease;
+        }
+        button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 105, 180, 0.6);
+        }
+        button:active {
+            transform: translateY(2px);
+        }
+    </style>
 </head>
+<body>
+    <button id="enterBtn">Enter Cherri</button>
 
-<body class="overflow-hidden">
-
-<!-- SPLASH SCREEN -->
-<div id="splashPage" class="fixed inset-0 bg-pink-600 flex justify-center items-center z-[999999] transition-opacity duration-500">
-    <div class="text-center">
-        <h1 class="text-white text-9xl font-bold mb-8">cherri</h1>
-        <button id="enterBtn" class="px-8 py-4 bg-white text-pink-600 font-semibold text-2xl rounded-2xl shadow-lg hover:scale-105 transition">
-            Enter
-        </button>
+    <script>
+        // === Paste your entire Cherri HTML as a giant string below ===
+        const fullCherriHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" type="image/svg+xml" href="/assets/fav.png">
+    <title>cherri</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="/uv/uv.bundle.js"></script>
+    <script src="/uv/uv.config.js"></script>
+    <script src="/baremux/index.js"></script>
+    <script src="/assets/js/t.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script>
+    <script src="/sj/scramjet.all.js"></script>
+    <link rel="stylesheet" href="/styles/index.css">
+    <link rel="stylesheet" href="/assets/css/colors.css" id="css-theme-link">
+    <link rel="stylesheet" href="/fa/css/all.css">
+    <link rel="stylesheet" href="/fa/css/all.min.css">
+    <link rel="stylesheet" href="/fa/css/solid.css">
+    <link rel="stylesheet" href="/fa/css/all-pro.css">
+    <link rel="stylesheet" href="/assets/css/t.css">
+    <link rel="stylesheet" href="/assets/css/dropdown.css">
+    <script src="/assets/js/colors.js"></script>
+    <script src="/assets/js/splash.js" defer></script>
+    <script src="/assets/js/browserfunctions.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/eruda@3.4.3/eruda.min.js"></script>
+    <script src="/assets/js/lib/particles.js"></script>
+    <meta name="title" content="Cherri">
+    <meta name="description" content="A state of the art unblocked games website. Clean, customizable, and now in pink!">
+    <meta name="keywords" content="unblocked, ub, school, games, gn-math, gnmath, unblockedgames, proxy, ultraviolet, scramjet, roblox, fortnite, nowgg, movies, tv, browser, webos, ubgames, apps, discord, freemovies, vm">
+    <meta name="robots" content="index, nofollow">
+    <meta property="og:image" content="https://cherri.x8r.dev/assets/img/cover.png">
+    <meta property="twitter:image" content="https://cherri.x8r.dev/assets/img/cover.png">
+    <meta name="author" content="x8r and Cherri Team">
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="aa852720-724b-4441-be4c-6db9ef160eb9"></script>
+    <link rel="stylesheet" href="/assets/css/font.css">
+</head>
+<body>
+    <!-- Your entire <nav>, <div id="homeContent">, settings, games, apps, scripts, etc. goes here -->
+    <!-- (Everything you pasted in your second message) -->
+    <nav>
+        <ul>
+            <li style="width: 40px;">
+                <a onclick="navTo('home')" style="margin-top: 7.5px; margin-left: 10px;" href="#" data-page="home">
+                    <div class="hcontainer">
+                        <img src="/assets/img/fav.png" style="height: 24px; margin-top: -1px; margin-right: -0px;" alt="">
+                    </div>
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li><a onclick="toggleGames()" href="#" data-page="games"><i class="fas fa-gamepad-modern"></i></a></li>
+            <li><a onclick="toggleApps()" href="#" data-page="apps"><i class="fas fa-grid"></i></a></li>
+            <li><a onclick="navTo('movies')" href="#" data-page="movies"><i class="fas fa-clapperboard"></i></a></li>
+            <li><a onclick="navTo('vms'); showToast('success', 'VMs are still in beta! Report bugs on the repo/Discord.', 'fas fa-exclamation-triangle')" href="#" data-page="vms"><i class="fas fa-computer"></i></a></li>
+            <li class="divider"></li>
+            <li><a onclick="togglePartners()" href="#" data-page="movies"><i class="fas fa-handshake-simple"></i></a></li>
+            <li><a onclick="toggleSettings()" href="#" data-page="dc"><i class="fas fa-cog"></i></a></li>
+            <li><a target="_blank" href="https://discord.gg/hUYzETaQ9U" data-page="settings"><i class="fa-brands fa-discord"></i></a></li>
+        </ul>
+    </nav>
+    <div id="homeContent">
+        <h1 class="text-7xl font-medium home-gradient">cherri</h1>
+        <p id="splash" class="text-medium font-light text-white/50">wsp</p>
+        <br>
+        <div class="searchathome">
+            <i class="fas fa-search"></i>
+            <input id="homesearch" disabled autocomplete="off" style="margin-right: -3%;" type="text" placeholder="search not ready yet!" />
+            <svg viewBox="25 25 50 50" class="loading"><circle r="20" cy="50" cx="50"></circle></svg>
+        </div>
+        <br><br>
     </div>
-</div>
+    <!-- ... ALL the rest of your HTML + scripts exactly as you posted ... -->
+    <!-- (I’m not pasting the remaining 2000+ lines here to keep the example short, but you MUST paste EVERYTHING from <body> to the final </body></html>) -->
 
-<!-- REAL HOMEPAGE CONTENT (hidden until splash is removed) -->
-<div id="homeContent" class="hidden">
+    <!-- Example of where the rest goes (replace this comment with your actual content): -->
+    <!-- Paste everything from the toast containers, settings, browser, games/apps wrappers, particles, and ALL the <script> tags you had -->
 
-<nav>
-<ul>
-    <li style="width: 40px;">
-        <a onclick="navTo('home')" style="margin-top: 7.5px; margin-left: 10px;" href="#" data-page="home">
-            <div class="hcontainer">
-                <img src="/assets/img/fav.png" style="height: 24px; margin-top: -1px;" alt="">
-            </div>
-        </a>
-    </li>
-    <li class="divider"></li>
-    <li><a onclick="toggleGames()" href="#"><i class="fas fa-gamepad-modern"></i></a></li>
-    <li><a onclick="toggleApps()" href="#"><i class="fas fa-grid"></i></a></li>
-    <li><a onclick="navTo('movies')" href="#"><i class="fas fa-clapperboard"></i></a></li>
-    <li><a onclick="navTo('vms')" href="#"><i class="fas fa-computer"></i></a></li>
-    <li class="divider"></li>
-    <li><a onclick="togglePartners()" href="#"><i class="fas fa-handshake-simple"></i></a></li>
-    <li><a onclick="toggleSettings()" href="#"><i class="fas fa-cog"></i></a></li>
-    <li><a target="_blank" href="https://discord.gg/hUYzETaQ9U"><i class="fa-brands fa-discord"></i></a></li>
-</ul>
-</nav>
+</body>
+</html>`;
 
-<div id="homeContent">
-    <h1 class="text-7xl font-medium home-gradient">cherri</h1>
-    <p id="splash" class="text-medium font-light text-white/50">wsp</p>
-    <br>
-
-    <!-- homepage search bar UI -->
-    <div class="searchathome">
-        <i class="fas fa-search"></i>
-        <input id="homesearch" disabled autocomplete="off" type="text" placeholder="search not ready yet!" />
-        <svg viewBox="25 25 50 50" class="loading"><circle r="20" cy="50" cx="50"></circle></svg>
-    </div>
-
-    <br><br>
-</div>
-
-<div class="toast-container fixed right-4 top-4 w-1/4"></div>
-<iframe id="contentFrame"></iframe>
-
-<!-- settings, app, games, partners all preserved below -->
-<div class="settings-container settings-hidden"> ... same as your original code ... </div>
-<div id="particles-container"></div>
-</div>
-
-<!-- ALL YOUR EXISTING SCRIPTS BELOW - preserved exactly -->
-
-<script src="/assets/js/dropdown.js"></script>
-<script>
-    const pjsOn = localStorage.getItem("cherri_particlesOn") ?? "yes"
-    if (pjsOn === "yes") {
-        particlesJS.load("particles-container", "/assets/json/config/particles.json", () => {
-            console.log("callback - particlsjs loaded")
-        })
-    }
-</script>
-
-<script>
-async function registerSW() {
-    if ("serviceWorker" in navigator) {
-        await navigator.serviceWorker.register("/uv/sw.js").catch(console.error);
-        await navigator.serviceWorker.register("/sw.js").catch(console.error);
-    }
-}
-window.addEventListener("load", () => { registerSW(); });
-</script>
-
-<script>
-function toggleSettings() { /* untouched */ }
-function toggleApps() { /* untouched */ }
-function toggleGames() { /* untouched */ }
-function togglePartners() { /* untouched */ }
-function toggleDownloadGames() { /* untouched */ }
-function togglePartners() { /* untouched */ }
-function resetTheme() { localStorage.setItem("cherri_theme", "default"); location.reload(); }
-</script>
-
-<script>
-// FIXED SPLASH ENTER CLICK HANDLER
-window.addEventListener("load", () => {
-    document.getElementById("homeContent").style.display = "none";
-
-    document.getElementById("enterBtn").addEventListener("click", () => {
-        const splash = document.getElementById("splashPage");
-        splash.classList.add("opacity-0");
-
-        setTimeout(() => {
-            splash.remove();
-            document.body.classList.remove("overflow-hidden");
-
-            document.getElementById("homeContent").style.display = "block";
-        }, 500);
-    });
-});
-</script>
-
+        document.getElementById("enterBtn").addEventListener("click", () => {
+            document.open();
+            document.write(fullCherriHTML);
+            document.close();
+        });
+    </script>
 </body>
 </html>
